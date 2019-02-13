@@ -1,12 +1,11 @@
-package com.desafio1.Desafio1;
+package com.desafio1.desafio1.modelo;
 
-import com.desafio1.Desafio1.Classes.Aluno;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class AlunoTest {
+public class AlunoTests {
     @Test
     public void valida_nome_token(){
         Aluno aluno = new Aluno("Aluno Teste",
@@ -16,6 +15,6 @@ public class AlunoTest {
                                 null,
                                 true);
 
-        Assert.assertArrayEquals(Arrays.asList("Aluno", "Teste").toArray(), aluno.getListNome().toArray());
+        Assertions.assertArrayEquals(Arrays.asList("Aluno", "Teste").toArray(), aluno.getListNome().toArray());
     }
 }

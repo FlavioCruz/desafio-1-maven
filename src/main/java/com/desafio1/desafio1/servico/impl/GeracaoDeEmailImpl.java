@@ -1,25 +1,30 @@
-package com.desafio1.Desafio1.Classes;
+package com.desafio1.desafio1.servico.impl;
 
-import com.desafio1.Desafio1.Exceptions.GenerationException;
-import com.desafio1.Desafio1.Exceptions.StudentNotFoundException;
-import com.desafio1.Desafio1.Servicos.ServicosDeAluno;
+import com.desafio1.desafio1.modelo.Aluno;
+import com.desafio1.desafio1.servico.GeracaoDeEmail;
+import com.desafio1.desafio1.exception.GenerationException;
+import com.desafio1.desafio1.exception.StudentNotFoundException;
+import com.desafio1.desafio1.servico.ServicosDeAluno;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-public class MotorDeGeracaoDeEmail implements GeracaoDeEmail {
+@Service
+public class GeracaoDeEmailImpl implements GeracaoDeEmail {
 
     private final String MAIL = "@id.uff.br";
 
-    public MotorDeGeracaoDeEmail(){}
+    @Autowired
+    ServicosDeAluno servicosDeAluno;
 
     /**
      * Gera uma lista de emails baseada no nome completo do Aluno
      * @param nome {@link String}
      * @return {@link List<String>}
      */
-    private List<String> gerarEmails(List<String> nome){
+    public List<String> gerarEmails(List<String> nome){
         List<String> emails = new ArrayList<String>();
         emails.add(nome.get(0).toLowerCase() + "_" + nome.get(1).toLowerCase() + MAIL);
 
@@ -43,22 +48,16 @@ public class MotorDeGeracaoDeEmail implements GeracaoDeEmail {
      * @throws GenerationException
      */
     public List<String> escolhaDeEmail(String matricula) throws GenerationException {
-        // scanner para receber inputs do teclado
-        Scanner teclado = new Scanner(System.in);
         // recupero a entidade aluno pela matricula
         Aluno aluno = null;
         try {
-            aluno = ServicosDeAluno.getInstance().obterAlunoPorMatricula(matricula);
-
+            aluno = servicosDeAluno.obterAlunoPorMatricula(matricula);
             // se o aluno não estiver ativo, retorno um erro
             if(!aluno.getStatus()){
                 throw new GenerationException("Aluno não está com a matrícula ativa");
             }
             // gero a lista de emails do aluno
             return gerarEmails(aluno.getListNome());
-
-
-
         } catch (Exception e) {
             throw new GenerationException(e.getMessage());
         }
@@ -72,13 +71,13 @@ public class MotorDeGeracaoDeEmail implements GeracaoDeEmail {
      */
     public void finalizaCadastroEmail(Aluno aluno, String email) throws GenerationException {
         try {
-            if(aluno.equals(ServicosDeAluno.getInstance().obterAlunoPorEmail(email))){
+            if(aluno.equals(servicosDeAluno.obterAlunoPorEmail(email))){
                 throw new GenerationException("Email já cadastrado");
             }
         } catch (StudentNotFoundException e) {
             throw new GenerationException("Aluno não encontrado");
         }
         aluno.setUffmail(email);
-        ServicosDeAluno.getInstance().atualizar(aluno);
+        servicosDeAluno.atualizar(aluno);
     }
 }

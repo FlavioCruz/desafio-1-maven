@@ -2,26 +2,32 @@
  * @author Flavio Cruz
  */
 
-package com.desafio1.Desafio1.Main;
+package com.desafio1.desafio1.servico;
 
-import com.desafio1.Desafio1.Classes.Aluno;
-import com.desafio1.Desafio1.Classes.GeracaoDeEmail;
-import com.desafio1.Desafio1.Classes.MotorDeGeracaoDeEmail;
-import com.desafio1.Desafio1.Exceptions.GenerationException;
-import com.desafio1.Desafio1.Exceptions.StudentNotFoundException;
-import com.desafio1.Desafio1.Servicos.ServicosDeAluno;
-import com.desafio1.Desafio1.Utils.Utils;
+import com.desafio1.desafio1.modelo.Aluno;
+import com.desafio1.desafio1.exception.GenerationException;
+import com.desafio1.desafio1.exception.StudentNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Scanner;
 
+@Service
 public class Main {
-    public static void main(String[] args){
+    @Autowired
+    private ServicosDeAluno servicosDeAluno;
+    @Autowired
+    private ServicosDeCSV servicosDeCSV;
+    @Autowired
+    private GeracaoDeEmail gerador;
+
+    public void main(String[] args){
         Exception exception = null;
-        
+
         // inicializo a lista de alunos
         String caminho = "./alunos.csv";
-        Utils.getInstance().Initialize(caminho);
+        servicosDeCSV.readCSVFile(caminho);
 
         // scanner para ler inputs do teclado
         Scanner teclado = new Scanner(System.in);
@@ -29,8 +35,7 @@ public class Main {
         String matricula = teclado.next();
         // recupero o aluno pela matrícula e gero o email caso a matrícula seja válida
         try{
-            GeracaoDeEmail gerador = new MotorDeGeracaoDeEmail();
-            Aluno aluno = ServicosDeAluno.getInstance().obterAlunoPorMatricula(matricula);
+            Aluno aluno = servicosDeAluno.obterAlunoPorMatricula(matricula);
             List<String> emails = gerador.escolhaDeEmail(matricula);
             System.out.println(aluno.getNome().split(" ")[0] + ", por favor escolha uma das opções abaixo para o seu UFFMail");
             for (int i = 0; i < emails.size(); i++){
@@ -50,7 +55,7 @@ public class Main {
         }
     }
 
-    private static void tratandoException(Exception e){
+    private void tratandoException(Exception e){
         System.err.println(e.getMessage());
         System.out.println();
         main(null);

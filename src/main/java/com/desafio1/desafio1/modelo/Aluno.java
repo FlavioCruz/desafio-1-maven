@@ -1,4 +1,4 @@
-package com.desafio1.Desafio1.Classes;
+package com.desafio1.desafio1.modelo;
 
 import java.util.Arrays;
 import java.util.List;

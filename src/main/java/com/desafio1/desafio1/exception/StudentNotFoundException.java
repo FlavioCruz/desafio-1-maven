@@ -1,4 +1,4 @@
-package com.desafio1.Desafio1.Exceptions;
+package com.desafio1.desafio1.exception;
 
 /**
  * Classe que é lançada quando existe algum problema na recuperação de aluno, por erros previstos.

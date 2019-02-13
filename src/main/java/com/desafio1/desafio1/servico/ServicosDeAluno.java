@@ -1,8 +1,7 @@
-package com.desafio1.Desafio1.Servicos;
+package com.desafio1.desafio1.servico;
 
-import com.desafio1.Desafio1.Classes.Aluno;
-import com.desafio1.Desafio1.Dados.AlunoDados;
-import com.desafio1.Desafio1.Exceptions.StudentNotFoundException;
+import com.desafio1.desafio1.modelo.Aluno;
+import com.desafio1.desafio1.exception.StudentNotFoundException;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.desafio1.Desafio1.Dados;
+package com.desafio1.desafio1.dado;
 
-import com.desafio1.Desafio1.Classes.Aluno;
+import com.desafio1.desafio1.modelo.Aluno;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
