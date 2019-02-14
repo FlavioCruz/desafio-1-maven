@@ -15,8 +15,18 @@ public class ServicosDeAlunoImpl implements ServicosDeAluno{
 
     @Autowired
     private AlunoDados repositorioDeAlunoDados;
+    private AlunoDados swapRepositorio;
 
     public ServicosDeAlunoImpl(){
+    }
+
+    public void setRepositorioMock(AlunoDados mock){
+        swapRepositorio = repositorioDeAlunoDados;
+        repositorioDeAlunoDados = mock;
+    }
+
+    public void desfazMock(){
+        repositorioDeAlunoDados = swapRepositorio;
     }
 
     public List<Aluno> obterTodos(){
@@ -56,10 +66,10 @@ public class ServicosDeAlunoImpl implements ServicosDeAluno{
         }
         List<Aluno> alunos = obterTodos();
         for(Aluno a : alunos){
-            if(a.getEmail().equalsIgnoreCase(email)){
+            if(a.getUffmail().equalsIgnoreCase(email)){
                 return a;
             }
         }
-        return null;
+        throw new StudentNotFoundException("Aluno não encontrado.");
     }
 }

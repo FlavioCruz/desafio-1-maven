@@ -2,6 +2,7 @@ package com.desafio1.desafio1.modelo;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Aluno {
     private String nome;
@@ -70,5 +71,23 @@ public class Aluno {
 
     public List<String> getListNome(){
         return Arrays.asList(nome.split(" "));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Aluno aluno = (Aluno) o;
+        return Objects.equals(nome, aluno.nome) &&
+                Objects.equals(matricula, aluno.matricula) &&
+                Objects.equals(telefone, aluno.telefone) &&
+                Objects.equals(email, aluno.email) &&
+                Objects.equals(uffmail, aluno.uffmail) &&
+                Objects.equals(status, aluno.status);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome, matricula, telefone, email, uffmail, status);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -14,13 +15,23 @@ import java.io.IOException;
 public class ServicosDeCSVImpl implements ServicosDeCSV {
     @Autowired
     private ServicosDeAluno servicosDeAluno;
+    private ServicosDeAluno swapServico;
+
+    public void setRepositorioMock(ServicosDeAluno mock){
+        swapServico = servicosDeAluno;
+        servicosDeAluno = mock;
+    }
+
+    public void desfazMock(){
+        servicosDeAluno = swapServico;
+    }
 
 
     /**
      * Leio os dados do arquivo e "persisto" na camada de dados de aluno
      * @param caminho {@link String}
      */
-    public void readCSVFile(String caminho){
+    public void readCSVFile(String caminho) throws IOException {
         BufferedReader br = null;
         String linha = "";
 
@@ -33,7 +44,7 @@ public class ServicosDeCSVImpl implements ServicosDeCSV {
                 servicosDeAluno.salvar(new Aluno(dados[0], dados[1], dados[2], dados[3], dados[4], status));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw e;
         } finally {
             if (br != null) {
                 try {

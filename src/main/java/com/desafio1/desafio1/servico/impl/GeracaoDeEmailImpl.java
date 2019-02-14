@@ -74,7 +74,7 @@ public class GeracaoDeEmailImpl implements GeracaoDeEmail {
             if(aluno.equals(servicosDeAluno.obterAlunoPorEmail(email))){
                 throw new GenerationException("Email já cadastrado");
             }
-        } catch (StudentNotFoundException e) {
+        } catch (StudentNotFoundException | NullPointerException e) {
             throw new GenerationException("Aluno não encontrado");
         }
         aluno.setUffmail(email);

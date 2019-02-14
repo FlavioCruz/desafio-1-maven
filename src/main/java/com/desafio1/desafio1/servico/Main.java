@@ -10,6 +10,7 @@ import com.desafio1.desafio1.exception.StudentNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,12 +23,16 @@ public class Main {
     @Autowired
     private GeracaoDeEmail gerador;
 
-    public void main(String[] args){
+    public void main(String[] args) {
         Exception exception = null;
 
         // inicializo a lista de alunos
         String caminho = "./alunos.csv";
-        servicosDeCSV.readCSVFile(caminho);
+        try {
+            servicosDeCSV.readCSVFile(caminho);
+        } catch (IOException e) {
+            tratandoException(e);
+        }
 
         // scanner para ler inputs do teclado
         Scanner teclado = new Scanner(System.in);
@@ -55,7 +60,7 @@ public class Main {
         }
     }
 
-    private void tratandoException(Exception e){
+    private void tratandoException(Exception e) {
         System.err.println(e.getMessage());
         System.out.println();
         main(null);
